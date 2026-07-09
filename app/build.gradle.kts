@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -34,6 +36,10 @@ android {
 }
 
 dependencies {
+    implementation("com.google.dagger:dagger:2.35.1")
+    implementation("com.google.dagger:dagger-android-support:2.35.1")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.35.1")
+
     implementation(libs.activity.ktx)
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)
