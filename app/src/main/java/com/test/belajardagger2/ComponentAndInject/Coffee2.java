@@ -11,4 +11,12 @@ public class Coffee2 {
         this.farm2 = farm2;
         this.river2 = river2;
     }
+
+    @Inject
+    Farm2 farm2test;
+    @Inject
+    River2 river2test;
+    public String getCoffeCup(){
+        return farm2test.getBenas() + "+" + river2test.getWater();
+    }
 }

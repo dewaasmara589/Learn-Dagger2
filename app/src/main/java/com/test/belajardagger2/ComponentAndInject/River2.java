@@ -6,4 +6,8 @@ public class River2 {
     @Inject
     public River2() {
     }
+
+    public String getWater(){
+        return "water";
+    }
 }

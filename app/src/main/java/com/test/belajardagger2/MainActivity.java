@@ -1,6 +1,7 @@
 package com.test.belajardagger2;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
 //        Coffee2 coffee2 = new Coffee2(farm2, river2);
 
         // Dagger
+        // DaggerCoffeeComponent error just run app
         CoffeeComponent coffeeComponent = DaggerCoffeeComponent.create();
         coffeeComponent.getCoffeeCup();
+        Log.d("TAG", "onCreate: " + coffeeComponent.getCoffeeCup().getCoffeCup());
 
         // Ilustrasi 2
 //                              CoffeeShop
