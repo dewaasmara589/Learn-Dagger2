@@ -21,6 +21,8 @@ import com.test.belajardagger2.di.Engine;
 import com.test.belajardagger2.di.Plane;
 import com.test.belajardagger2.di.PlaneType;
 import com.test.belajardagger2.di.Wings;
+import com.test.belajardagger2.di2.Car;
+import com.test.belajardagger2.di2.EngineCar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,5 +84,22 @@ public class MainActivity extends AppCompatActivity {
         Plane p = new Plane(e, w, t);
         p.TakeOff();
 
+//----------------------------------------------------------------------------------------------------
+
+        // Functional engine (Electric or GasOil)
+        EngineCar engineCar = new EngineCar();
+        Car car = new Car(engineCar);
+        car.start();
+
+
+        //Ilustrasi
+
+//        ---------------------------------
+//        |                    _________  |
+//        |                    | Engine|  |
+//        |                    |_______|  |
+//        |         Car                   |
+//        |                               |
+//        ---------------------------------
     }
 }
