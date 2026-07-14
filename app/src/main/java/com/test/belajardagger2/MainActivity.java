@@ -17,6 +17,10 @@ import com.test.belajardagger2.ComponentAndInject.River2;
 import com.test.belajardagger2.Introduction.Coffee;
 import com.test.belajardagger2.Introduction.Farm;
 import com.test.belajardagger2.Introduction.River;
+import com.test.belajardagger2.di.Engine;
+import com.test.belajardagger2.di.Plane;
+import com.test.belajardagger2.di.PlaneType;
+import com.test.belajardagger2.di.Wings;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,5 +72,15 @@ public class MainActivity extends AppCompatActivity {
 //
 // (*)@Inject                                   (**)@Component
 //              Dependecies Labels              Creator Labels
+
+//----------------------------------------------------------------------------------------------------
+
+        Engine e = new Engine();
+        Wings w = new Wings();
+        PlaneType t = new PlaneType();
+
+        Plane p = new Plane(e, w, t);
+        p.TakeOff();
+
     }
 }
