@@ -101,5 +101,31 @@ public class MainActivity extends AppCompatActivity {
 //        |         Car                   |
 //        |                               |
 //        ---------------------------------
+
+//----------------------------------------------------------------------------------------------------
+
+        //Ilustrasi diapp
+
+//      | Class A | ---Make Use Of---> | Class B | ---Make Use Of---> | Class C |
+
+//         [Class B -> Class A = Service]      [Class B -> Class C = Client]
+
+//      Dependence injection is the act of injecting service into clients from outside. class A = client
+//      class b = service, class a depends on b.
+
+//        Dependency Inject
+//        1. Constructor Injection
+//          - Simple
+//          - Inject Fields can be finalized
+//          - Easy to Mock services in Unit Test
+//
+//        2. Methods
+//          - Method signature reflects dependency
+//          - Can happen after constructor
+//
+//        3. Field Injection
+//          - Can happen after constructor
+
+
     }
 }
