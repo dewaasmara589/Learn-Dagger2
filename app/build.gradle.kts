@@ -40,6 +40,9 @@ dependencies {
     implementation("com.google.dagger:dagger-android-support:2.35.1")
     annotationProcessor("com.google.dagger:dagger-compiler:2.35.1")
 
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
     implementation(libs.activity.ktx)
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)
