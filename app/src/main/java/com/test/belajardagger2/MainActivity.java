@@ -3,37 +3,28 @@ package com.test.belajardagger2;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.test.belajardagger2.ComponentAndInject.Coffee2;
 import com.test.belajardagger2.ComponentAndInject.CoffeeComponent;
 import com.test.belajardagger2.ComponentAndInject.DaggerCoffeeComponent;
-import com.test.belajardagger2.ComponentAndInject.Farm2;
-import com.test.belajardagger2.ComponentAndInject.River2;
 import com.test.belajardagger2.Introduction.Coffee;
 import com.test.belajardagger2.Introduction.Farm;
 import com.test.belajardagger2.Introduction.River;
+import com.test.belajardagger2.detailQuestion.QuestionDetailsActivity;
 import com.test.belajardagger2.di.Engine;
 import com.test.belajardagger2.di.Plane;
 import com.test.belajardagger2.di.PlaneType;
 import com.test.belajardagger2.di.Wings;
 import com.test.belajardagger2.di2.Car;
 import com.test.belajardagger2.di2.EngineCar;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.test.belajardagger2.questionslist.QuestionListViewMVCImpl;
+import com.test.belajardagger2.questionslist.QuestionListViewMvc;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,19 +32,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements Callback<QuestionsListResponseSchema> {
-    private RecyclerView mRecyclerView;
-    private QuestionsAdapter mQuestionAdapter;
+public class MainActivity extends AppCompatActivity implements
+        Callback<QuestionsListResponseSchema>, QuestionListViewMvc.Listener {
 
     private StackoverflowApi mStackoverflowApi;
 
     private Call<QuestionsListResponseSchema> mCall;
 
+    private QuestionListViewMvc mViewMVC;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+
+        mViewMVC = new QuestionListViewMVCImpl(LayoutInflater.from(this), null);
+
+        setContentView(mViewMVC.getRootView());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -151,19 +146,6 @@ public class MainActivity extends AppCompatActivity implements Callback<Question
 
 //----------------------------------------------------------------------------------------------------
 
-        //Initializing RecyclerView
-
-        mRecyclerView = findViewById(R.id.recycler);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mQuestionAdapter = new QuestionsAdapter(new OnQuestionClickListener() {
-            @Override
-            public void onQuestionClicked(Question question) {
-                QuestionDetailsActivity.start(MainActivity.this, question.getId());
-            }
-        });
-
-        mRecyclerView.setAdapter(mQuestionAdapter);
-
         //Initializing Retrofit
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
@@ -178,6 +160,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Question
     protected void onStart() {
         super.onStart();
 
+        mViewMVC.registerListener(this);
+
         mCall = mStackoverflowApi.lastActiveQuestions(20);
         mCall.enqueue(this);
     }
@@ -185,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Question
     @Override
     protected void onStop() {
         super.onStop();
+
+        mViewMVC.unregisterListener(this);
+
         if (mCall!=null){
             mCall.cancel();
         }
@@ -194,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Question
     public void onResponse(Call<QuestionsListResponseSchema> call, Response<QuestionsListResponseSchema> response) {
         QuestionsListResponseSchema responseSchema;
         if (response.isSuccessful() && (responseSchema = response.body()) != null){
-            mQuestionAdapter.bindData(responseSchema.getQuestions());
+            mViewMVC.bindQuestions(responseSchema.getQuestions());
         }else {
             onFailure(call, null);
         }
@@ -209,60 +196,13 @@ public class MainActivity extends AppCompatActivity implements Callback<Question
                 .commitAllowingStateLoss();
     }
 
+    @Override
+    public void onQuestionClicked(Question question) {
+        QuestionDetailsActivity.start(MainActivity.this, question.getId());
+    }
+
     //----------------------------------------------------------------------------------------------------
 
     /************** RecyclerView Adapter ****************/
-    public interface OnQuestionClickListener{
-        void onQuestionClicked(Question question);
-    }
-
-    public static class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.QuestionsViewHolder>{
-        private final OnQuestionClickListener mOnQuestionClickListener;
-        private List<Question> mQuestionList = new ArrayList<>(0);
-
-        // View Holder
-        public class QuestionsViewHolder extends RecyclerView.ViewHolder{
-            public TextView mTitle;
-
-            public QuestionsViewHolder(@NonNull View itemView){
-                super(itemView);
-
-                mTitle = itemView.findViewById(R.id.txt_title);
-            }
-        }
-
-        public QuestionsAdapter(OnQuestionClickListener onQuestionClickListener){
-            mOnQuestionClickListener = onQuestionClickListener;
-        }
-
-        public void bindData(List<Question> questions){
-            mQuestionList = new ArrayList<>(questions);
-            notifyDataSetChanged();
-        }
-
-        @NonNull
-        @Override
-        public QuestionsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_question_list_item, parent, false);
-            return new QuestionsViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull QuestionsViewHolder holder, int position) {
-            holder.mTitle.setText(mQuestionList.get(position).getTitle());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mOnQuestionClickListener.onQuestionClicked(mQuestionList.get(position));
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mQuestionList.size();
-        }
-
-    }
 
 }
