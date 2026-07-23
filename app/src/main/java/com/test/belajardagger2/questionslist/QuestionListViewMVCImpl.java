@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.test.belajardagger2.Question;
+import com.test.belajardagger2.quetions.Question;
 import com.test.belajardagger2.R;
 
 import java.util.ArrayList;

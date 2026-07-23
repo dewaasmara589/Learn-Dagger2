@@ -1,4 +1,4 @@
-package com.test.belajardagger2;
+package com.test.belajardagger2.quetions;
 
 import com.google.gson.annotations.SerializedName;
 

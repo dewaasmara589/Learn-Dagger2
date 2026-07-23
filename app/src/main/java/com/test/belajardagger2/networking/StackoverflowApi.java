@@ -1,4 +1,4 @@
-package com.test.belajardagger2;
+package com.test.belajardagger2.networking;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

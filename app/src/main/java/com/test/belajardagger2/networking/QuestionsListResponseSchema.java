@@ -1,6 +1,7 @@
-package com.test.belajardagger2;
+package com.test.belajardagger2.networking;
 
 import com.google.gson.annotations.SerializedName;
+import com.test.belajardagger2.quetions.Question;
 
 import java.util.List;
 
