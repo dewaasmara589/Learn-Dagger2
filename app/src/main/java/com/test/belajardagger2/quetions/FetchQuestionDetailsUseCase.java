@@ -2,7 +2,7 @@ package com.test.belajardagger2.quetions;
 
 import androidx.annotation.Nullable;
 
-import com.test.belajardagger2.Constants;
+import com.test.belajardagger2.common.Constants;
 import com.test.belajardagger2.networking.SingleQuestionResponseSchema;
 import com.test.belajardagger2.networking.StackoverflowApi;
 import com.test.belajardagger2.questionslist.BaseObservable;

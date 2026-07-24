@@ -1,4 +1,4 @@
-package com.test.belajardagger2;
+package com.test.belajardagger2.common;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
+
+import com.test.belajardagger2.R;
 
 public class ServerErrorDialogFragment extends DialogFragment {
 

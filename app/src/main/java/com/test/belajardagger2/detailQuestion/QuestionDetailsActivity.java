@@ -13,19 +13,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
-import com.test.belajardagger2.Constants;
 import com.test.belajardagger2.R;
-import com.test.belajardagger2.ServerErrorDialogFragment;
-import com.test.belajardagger2.networking.SingleQuestionResponseSchema;
-import com.test.belajardagger2.networking.StackoverflowApi;
+import com.test.belajardagger2.common.DialogsManager;
+import com.test.belajardagger2.common.ServerErrorDialogFragment;
 import com.test.belajardagger2.quetions.FetchQuestionDetailsUseCase;
 import com.test.belajardagger2.quetions.QuestionWithBody;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class QuestionDetailsActivity extends AppCompatActivity implements
         QuestionDetailsViewMVC.Listener, FetchQuestionDetailsUseCase.Listener {
@@ -34,6 +26,8 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
     private TextView mTXTQuestionBody;
     private String mQuestionId;
     private QuestionDetailsViewMVC mViewMvc;
+
+    private DialogsManager mDialogsManager;
 
     private FetchQuestionDetailsUseCase fetchQuestionDetailsUseCase;
 
@@ -54,6 +48,9 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         fetchQuestionDetailsUseCase = new FetchQuestionDetailsUseCase();
 
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
+
+        // Dialog error
+        mDialogsManager = new DialogsManager(getSupportFragmentManager());
 
     }
 
@@ -86,8 +83,6 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
 
     @Override
     public void onFetchOfQuestionDetailsFailed() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(ServerErrorDialogFragment.newInstance(), null)
-                .commitAllowingStateLoss();
+        mDialogsManager.shownRetainedDialogWithId(ServerErrorDialogFragment.newInstance(), "");
     }
 }

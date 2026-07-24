@@ -1,4 +1,4 @@
-package com.test.belajardagger2;
+package com.test.belajardagger2.common;
 
 public class Constants {
     private Constants(){}

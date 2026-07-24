@@ -16,16 +16,15 @@ import com.test.belajardagger2.ComponentAndInject.DaggerCoffeeComponent;
 import com.test.belajardagger2.Introduction.Coffee;
 import com.test.belajardagger2.Introduction.Farm;
 import com.test.belajardagger2.Introduction.River;
+import com.test.belajardagger2.common.DialogsManager;
+import com.test.belajardagger2.common.ServerErrorDialogFragment;
 import com.test.belajardagger2.detailQuestion.QuestionDetailsActivity;
-import com.test.belajardagger2.detailQuestion.QuestionDetailsViewMVC;
 import com.test.belajardagger2.di.Engine;
 import com.test.belajardagger2.di.Plane;
 import com.test.belajardagger2.di.PlaneType;
 import com.test.belajardagger2.di.Wings;
 import com.test.belajardagger2.di2.Car;
 import com.test.belajardagger2.di2.EngineCar;
-import com.test.belajardagger2.networking.QuestionsListResponseSchema;
-import com.test.belajardagger2.networking.StackoverflowApi;
 import com.test.belajardagger2.questionslist.QuestionListViewMVCImpl;
 import com.test.belajardagger2.questionslist.QuestionListViewMvc;
 import com.test.belajardagger2.quetions.FetchQuestionsListUseCase;
@@ -33,18 +32,15 @@ import com.test.belajardagger2.quetions.Question;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class MainActivity extends AppCompatActivity implements
         QuestionListViewMvc.Listener, FetchQuestionsListUseCase.Listener {
 
     private static final int NUM_OF_QUESTIONS_TO_FETCH = 20;
     private FetchQuestionsListUseCase fetchQuestionsListUseCase;
     private QuestionListViewMvc mViewMVC;
+
+    // Dialog Fragments
+    private DialogsManager mDialogsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements
         //Networking
         fetchQuestionsListUseCase = new FetchQuestionsListUseCase();
 
+        // Dialog Manager
+        mDialogsManager = new DialogsManager(getSupportFragmentManager());
+
     }
 
     @Override
@@ -182,9 +181,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFetchQuestionsFailed() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(ServerErrorDialogFragment.newInstance(), null)
-                .commitAllowingStateLoss();
+        mDialogsManager.shownRetainedDialogWithId(ServerErrorDialogFragment.newInstance(), "");
     }
 
     @Override
