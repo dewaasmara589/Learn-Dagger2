@@ -32,6 +32,8 @@ import com.test.belajardagger2.quetions.Question;
 
 import java.util.List;
 
+import retrofit2.Retrofit;
+
 public class MainActivity extends AppCompatActivity implements
         QuestionListViewMvc.Listener, FetchQuestionsListUseCase.Listener {
 
@@ -148,7 +150,8 @@ public class MainActivity extends AppCompatActivity implements
 //----------------------------------------------------------------------------------------------------
 
         //Networking
-        fetchQuestionsListUseCase = new FetchQuestionsListUseCase();
+        Retrofit retrofit = ((MyApplication) getApplication()).getRetrofit();
+        fetchQuestionsListUseCase = new FetchQuestionsListUseCase(retrofit);
 
         // Dialog Manager
         mDialogsManager = new DialogsManager(getSupportFragmentManager());
