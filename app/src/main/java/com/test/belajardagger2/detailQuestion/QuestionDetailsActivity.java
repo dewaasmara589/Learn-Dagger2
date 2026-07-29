@@ -17,6 +17,7 @@ import com.test.belajardagger2.MyApplication;
 import com.test.belajardagger2.R;
 import com.test.belajardagger2.common.DialogsManager;
 import com.test.belajardagger2.common.ServerErrorDialogFragment;
+import com.test.belajardagger2.networking.StackoverflowApi;
 import com.test.belajardagger2.quetions.FetchQuestionDetailsUseCase;
 import com.test.belajardagger2.quetions.FetchQuestionsListUseCase;
 import com.test.belajardagger2.quetions.QuestionWithBody;
@@ -49,8 +50,8 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         });
 
         //Networking
-        Retrofit retrofit = ((MyApplication) getApplication()).getRetrofit();
-        fetchQuestionDetailsUseCase = new FetchQuestionDetailsUseCase(retrofit);
+        StackoverflowApi stackoverflowApi = ((MyApplication) getApplication()).getStackoverflowApi();
+        fetchQuestionDetailsUseCase = new FetchQuestionDetailsUseCase(stackoverflowApi);
 
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
 

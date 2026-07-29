@@ -2,7 +2,6 @@ package com.test.belajardagger2.quetions;
 
 import androidx.annotation.Nullable;
 
-import com.test.belajardagger2.common.Constants;
 import com.test.belajardagger2.networking.SingleQuestionResponseSchema;
 import com.test.belajardagger2.networking.StackoverflowApi;
 import com.test.belajardagger2.questionslist.BaseObservable;
@@ -10,8 +9,6 @@ import com.test.belajardagger2.questionslist.BaseObservable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FetchQuestionDetailsUseCase extends BaseObservable<FetchQuestionDetailsUseCase.Listener> {
     public interface Listener{
@@ -19,20 +16,20 @@ public class FetchQuestionDetailsUseCase extends BaseObservable<FetchQuestionDet
         void onFetchOfQuestionDetailsFailed();
     }
 
-    private final StackoverflowApi stackoverflowApi;
+    private final StackoverflowApi mStackoverflowApi;
 
     @Nullable
     Call<SingleQuestionResponseSchema> call;
 
-    public FetchQuestionDetailsUseCase(Retrofit retrofit){
+    public FetchQuestionDetailsUseCase(StackoverflowApi stackoverflowApi){
 
-        stackoverflowApi = retrofit.create(StackoverflowApi.class);
+        mStackoverflowApi = stackoverflowApi;
     }
 
     public void fetchQuestionDetailsAndNotify(String questionId){
         cancelCurrentFetchIfActive();
 
-        call = stackoverflowApi.questionDetails(questionId);
+        call = mStackoverflowApi.questionDetails(questionId);
         call.enqueue(new Callback<SingleQuestionResponseSchema>() {
             @Override
             public void onResponse(Call<SingleQuestionResponseSchema> call, Response<SingleQuestionResponseSchema> response) {

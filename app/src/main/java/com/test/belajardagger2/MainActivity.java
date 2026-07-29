@@ -25,6 +25,7 @@ import com.test.belajardagger2.di.PlaneType;
 import com.test.belajardagger2.di.Wings;
 import com.test.belajardagger2.di2.Car;
 import com.test.belajardagger2.di2.EngineCar;
+import com.test.belajardagger2.networking.StackoverflowApi;
 import com.test.belajardagger2.questionslist.QuestionListViewMVCImpl;
 import com.test.belajardagger2.questionslist.QuestionListViewMvc;
 import com.test.belajardagger2.quetions.FetchQuestionsListUseCase;
@@ -150,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements
 //----------------------------------------------------------------------------------------------------
 
         //Networking
-        Retrofit retrofit = ((MyApplication) getApplication()).getRetrofit();
-        fetchQuestionsListUseCase = new FetchQuestionsListUseCase(retrofit);
+        StackoverflowApi stackoverflowApi = ((MyApplication) getApplication()).getStackoverflowApi();
+        fetchQuestionsListUseCase = new FetchQuestionsListUseCase(stackoverflowApi);
 
         // Dialog Manager
         mDialogsManager = new DialogsManager(getSupportFragmentManager());

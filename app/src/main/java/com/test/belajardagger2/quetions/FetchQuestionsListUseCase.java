@@ -2,7 +2,6 @@ package com.test.belajardagger2.quetions;
 
 import androidx.annotation.Nullable;
 
-import com.test.belajardagger2.common.Constants;
 import com.test.belajardagger2.networking.QuestionsListResponseSchema;
 import com.test.belajardagger2.networking.StackoverflowApi;
 import com.test.belajardagger2.questionslist.BaseObservable;
@@ -13,8 +12,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FetchQuestionsListUseCase extends BaseObservable<FetchQuestionsListUseCase.Listener> {
     public interface Listener{
@@ -22,20 +19,20 @@ public class FetchQuestionsListUseCase extends BaseObservable<FetchQuestionsList
         void onFetchQuestionsFailed();
     }
 
-    private final StackoverflowApi stackoverflowApi;
+    private final StackoverflowApi mStackoverflowApi;
 
     @Nullable
     Call<QuestionsListResponseSchema> call;
 
-    public FetchQuestionsListUseCase(Retrofit retrofit){
+    public FetchQuestionsListUseCase(StackoverflowApi stackoverflowApi){
 
-        this.stackoverflowApi = retrofit.create(StackoverflowApi.class);
+        this.mStackoverflowApi = stackoverflowApi;
     }
 
     public void fetchLastActiveQuestionsAndNotify(int numOfQuestions){
         cancelCurrentFetchIfActive();
 
-        call = stackoverflowApi.lastActiveQuestions(numOfQuestions);
+        call = mStackoverflowApi.lastActiveQuestions(numOfQuestions);
         call.enqueue(new Callback<QuestionsListResponseSchema>() {
             @Override
             public void onResponse(Call<QuestionsListResponseSchema> call, Response<QuestionsListResponseSchema> response) {
