@@ -50,8 +50,7 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         });
 
         //Networking
-        StackoverflowApi stackoverflowApi = ((MyApplication) getApplication()).getStackoverflowApi();
-        fetchQuestionDetailsUseCase = new FetchQuestionDetailsUseCase(stackoverflowApi);
+        fetchQuestionDetailsUseCase = ((MyApplication) getApplication()).fetchQuestionDetailsUseCase();
 
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
 

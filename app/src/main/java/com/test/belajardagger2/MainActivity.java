@@ -151,8 +151,7 @@ public class MainActivity extends AppCompatActivity implements
 //----------------------------------------------------------------------------------------------------
 
         //Networking
-        StackoverflowApi stackoverflowApi = ((MyApplication) getApplication()).getStackoverflowApi();
-        fetchQuestionsListUseCase = new FetchQuestionsListUseCase(stackoverflowApi);
+        fetchQuestionsListUseCase = ((MyApplication) getApplication()).fetchQuestionsListUseCase();
 
         // Dialog Manager
         mDialogsManager = new DialogsManager(getSupportFragmentManager());
