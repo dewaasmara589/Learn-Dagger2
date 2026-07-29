@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.test.belajardagger2.MyApplication;
 import com.test.belajardagger2.R;
+import com.test.belajardagger2.common.BaseActivity;
 import com.test.belajardagger2.common.DialogsManager;
 import com.test.belajardagger2.common.ServerErrorDialogFragment;
 import com.test.belajardagger2.networking.StackoverflowApi;
@@ -24,7 +25,7 @@ import com.test.belajardagger2.quetions.QuestionWithBody;
 
 import retrofit2.Retrofit;
 
-public class QuestionDetailsActivity extends AppCompatActivity implements
+public class QuestionDetailsActivity extends BaseActivity implements
         QuestionDetailsViewMVC.Listener, FetchQuestionDetailsUseCase.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
@@ -50,12 +51,12 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         });
 
         //Networking
-        fetchQuestionDetailsUseCase = ((MyApplication) getApplication()).getCompositionRoot().fetchQuestionDetailsUseCase();
+        fetchQuestionDetailsUseCase = getCompositionRoot().fetchQuestionDetailsUseCase();
 
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
 
         // Dialog error
-        mDialogsManager = new DialogsManager(getSupportFragmentManager());
+        mDialogsManager = getCompositionRoot().getDialogsManagerFactory().newDialogsManager(getSupportFragmentManager());
 
     }
 

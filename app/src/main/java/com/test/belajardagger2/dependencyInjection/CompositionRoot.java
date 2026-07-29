@@ -1,8 +1,11 @@
 package com.test.belajardagger2.dependencyInjection;
 
 import androidx.annotation.UiThread;
+import androidx.fragment.app.FragmentManager;
 
 import com.test.belajardagger2.common.Constants;
+import com.test.belajardagger2.common.DialogsManager;
+import com.test.belajardagger2.common.DialogsManagerFactory;
 import com.test.belajardagger2.networking.StackoverflowApi;
 import com.test.belajardagger2.quetions.FetchQuestionDetailsUseCase;
 import com.test.belajardagger2.quetions.FetchQuestionsListUseCase;
@@ -43,5 +46,9 @@ public class CompositionRoot {
     @UiThread
     public FetchQuestionsListUseCase fetchQuestionsListUseCase(){
         return new FetchQuestionsListUseCase(getStackoverflowApi());
+    }
+
+    public DialogsManagerFactory getDialogsManagerFactory(){
+        return new DialogsManagerFactory();
     }
 }

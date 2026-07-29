@@ -16,6 +16,7 @@ import com.test.belajardagger2.ComponentAndInject.DaggerCoffeeComponent;
 import com.test.belajardagger2.Introduction.Coffee;
 import com.test.belajardagger2.Introduction.Farm;
 import com.test.belajardagger2.Introduction.River;
+import com.test.belajardagger2.common.BaseActivity;
 import com.test.belajardagger2.common.DialogsManager;
 import com.test.belajardagger2.common.ServerErrorDialogFragment;
 import com.test.belajardagger2.detailQuestion.QuestionDetailsActivity;
@@ -35,7 +36,7 @@ import java.util.List;
 
 import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements
+public class MainActivity extends BaseActivity implements
         QuestionListViewMvc.Listener, FetchQuestionsListUseCase.Listener {
 
     private static final int NUM_OF_QUESTIONS_TO_FETCH = 20;
@@ -151,10 +152,10 @@ public class MainActivity extends AppCompatActivity implements
 //----------------------------------------------------------------------------------------------------
 
         //Networking
-        fetchQuestionsListUseCase = ((MyApplication) getApplication()).getCompositionRoot().fetchQuestionsListUseCase();
+        fetchQuestionsListUseCase = getCompositionRoot().fetchQuestionsListUseCase();
 
         // Dialog Manager
-        mDialogsManager = new DialogsManager(getSupportFragmentManager());
+        mDialogsManager = getCompositionRoot().getDialogsManagerFactory().newDialogsManager(getSupportFragmentManager());
 
     }
 
