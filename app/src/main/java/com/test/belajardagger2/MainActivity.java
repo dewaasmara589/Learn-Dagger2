@@ -5,11 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
 
 import com.test.belajardagger2.ComponentAndInject.CoffeeComponent;
 import com.test.belajardagger2.ComponentAndInject.DaggerCoffeeComponent;
@@ -26,15 +24,12 @@ import com.test.belajardagger2.di.PlaneType;
 import com.test.belajardagger2.di.Wings;
 import com.test.belajardagger2.di2.Car;
 import com.test.belajardagger2.di2.EngineCar;
-import com.test.belajardagger2.networking.StackoverflowApi;
 import com.test.belajardagger2.questionslist.QuestionListViewMVCImpl;
 import com.test.belajardagger2.questionslist.QuestionListViewMvc;
 import com.test.belajardagger2.quetions.FetchQuestionsListUseCase;
 import com.test.belajardagger2.quetions.Question;
 
 import java.util.List;
-
-import retrofit2.Retrofit;
 
 public class MainActivity extends BaseActivity implements
         QuestionListViewMvc.Listener, FetchQuestionsListUseCase.Listener {
@@ -51,7 +46,8 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        mViewMVC = new QuestionListViewMVCImpl(LayoutInflater.from(this), null);
+        // MVC
+        mViewMVC = getCompositionRoot().getViewMvcFactory().newInstance(QuestionListViewMvc.class, null);
 
         setContentView(mViewMVC.getRootView());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -152,10 +148,10 @@ public class MainActivity extends BaseActivity implements
 //----------------------------------------------------------------------------------------------------
 
         //Networking
-        fetchQuestionsListUseCase = getCompositionRoot().fetchQuestionsListUseCase();
+        fetchQuestionsListUseCase = getAppCompositionRoot().fetchQuestionsListUseCase();
 
         // Dialog Manager
-        mDialogsManager = getCompositionRoot().getDialogsManagerFactory().newDialogsManager(getSupportFragmentManager());
+        mDialogsManager = getAppCompositionRoot().getDialogsManagerFactory().newDialogsManager(getSupportFragmentManager());
 
     }
 

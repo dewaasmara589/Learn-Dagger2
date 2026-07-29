@@ -11,12 +11,12 @@ import com.test.belajardagger2.quetions.QuestionWithBody;
 import com.test.belajardagger2.R;
 import com.test.belajardagger2.questionslist.BaseViewMVC;
 
-public class QestionDetailsViewMvcImpl extends BaseViewMVC<QuestionDetailsViewMVC.Listener>
+public class QuestionDetailsViewMvcImpl extends BaseViewMVC<QuestionDetailsViewMVC.Listener>
         implements QuestionDetailsViewMVC {
 
     private final TextView mTxtQuestionBody;
 
-    public QestionDetailsViewMvcImpl(LayoutInflater inflater, ViewGroup container){
+    public QuestionDetailsViewMvcImpl(LayoutInflater inflater, ViewGroup container){
         setRootView(inflater.inflate(R.layout.activity_question_details, container, false));
         mTxtQuestionBody = findViewById(R.id.txt_question_body);
         mTxtQuestionBody.setMovementMethod(new ScrollingMovementMethod());

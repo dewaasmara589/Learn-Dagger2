@@ -7,23 +7,16 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
 
-import com.test.belajardagger2.MyApplication;
 import com.test.belajardagger2.R;
 import com.test.belajardagger2.common.BaseActivity;
 import com.test.belajardagger2.common.DialogsManager;
 import com.test.belajardagger2.common.ServerErrorDialogFragment;
-import com.test.belajardagger2.networking.StackoverflowApi;
 import com.test.belajardagger2.quetions.FetchQuestionDetailsUseCase;
-import com.test.belajardagger2.quetions.FetchQuestionsListUseCase;
 import com.test.belajardagger2.quetions.QuestionWithBody;
-
-import retrofit2.Retrofit;
 
 public class QuestionDetailsActivity extends BaseActivity implements
         QuestionDetailsViewMVC.Listener, FetchQuestionDetailsUseCase.Listener {
@@ -42,7 +35,9 @@ public class QuestionDetailsActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        mViewMvc = new QestionDetailsViewMvcImpl(LayoutInflater.from(this), null);
+        // MVC
+        mViewMvc = getCompositionRoot().getViewMvcFactory().newInstance(QuestionDetailsViewMVC.class, null);
+
         setContentView(mViewMvc.getRootView());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -51,12 +46,12 @@ public class QuestionDetailsActivity extends BaseActivity implements
         });
 
         //Networking
-        fetchQuestionDetailsUseCase = getCompositionRoot().fetchQuestionDetailsUseCase();
+        fetchQuestionDetailsUseCase = getAppCompositionRoot().fetchQuestionDetailsUseCase();
 
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
 
-        // Dialog error
-        mDialogsManager = getCompositionRoot().getDialogsManagerFactory().newDialogsManager(getSupportFragmentManager());
+        // Dialog Manager
+        mDialogsManager = getAppCompositionRoot().getDialogsManagerFactory().newDialogsManager(getSupportFragmentManager());
 
     }
 
