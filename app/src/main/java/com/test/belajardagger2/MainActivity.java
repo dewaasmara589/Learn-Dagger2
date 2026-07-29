@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements
 //----------------------------------------------------------------------------------------------------
 
         //Networking
-        fetchQuestionsListUseCase = ((MyApplication) getApplication()).fetchQuestionsListUseCase();
+        fetchQuestionsListUseCase = ((MyApplication) getApplication()).getCompositionRoot().fetchQuestionsListUseCase();
 
         // Dialog Manager
         mDialogsManager = new DialogsManager(getSupportFragmentManager());

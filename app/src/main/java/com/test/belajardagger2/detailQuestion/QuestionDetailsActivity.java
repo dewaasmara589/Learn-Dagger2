@@ -50,7 +50,7 @@ public class QuestionDetailsActivity extends AppCompatActivity implements
         });
 
         //Networking
-        fetchQuestionDetailsUseCase = ((MyApplication) getApplication()).fetchQuestionDetailsUseCase();
+        fetchQuestionDetailsUseCase = ((MyApplication) getApplication()).getCompositionRoot().fetchQuestionDetailsUseCase();
 
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
 
